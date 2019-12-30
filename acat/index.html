@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css" />
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
+    </script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
+    </script>
+    <script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+    <script src="jquery.rwdImageMaps.min.js"></script>
+
+    <style>
+        .mjd {
+            width: 90%;
+            height: auto;
+        }
+
+        .puzzle>div {
+            width: 90%;
+            text-align: center;
+            margin: 0 auto;
+        }
+
+        p {
+            font-size: 150%;
+        }
+
+        .jumbotron {
+            border-radius: 0.5rem;
+        }
+    </style>
+    <script>
+        const images = ["./penguins.png", "./haymana.png", "./crowd1.png"];
+        const imageSizes = [
+            ["1600", "900"],
+            ["1600", "1200"],
+            ["1600", "1067"]
+        ];
+        const coords = [
+            ["1408,374,1450,472"],
+            //["0,0,800,600"]
+            ["1570,362,1600,402"],
+            ["1168,167,1215,207"]
+        ];
+        var i = 0;
+        var locked = false;
+
+        function refresh() {
+            console.log($("img.mjd")[0].width);
+            let c = coords[i].toString().split(",");
+            for (let j = 0; j < c.length; j++) {
+                c[j] = c[j] * $("img.mjd")[0].width / imageSizes[i][0];
+            }
+            let result = c.join(",");
+            console.log(result);
+            $("map")[0].children[0].setAttribute("coords", result);
+        }
+
+        function cheer() {
+            $("h2.instruction")[0].innerHTML = "Cheers!";
+            $("h2.instruction")[0].style = "color:green;";
+
+            if (!locked) {
+                setTimeout(function () {
+
+                        locked = false;
+                        console.log(0);
+
+                        i++;
+                        if (i >= images.length) {
+                            i = 0
+                        } else if (i < 0) {
+                            i = images.length - 1
+                        }
+
+                        $("img.mjd")[0].setAttribute("width", imageSizes[i][0]);
+                        $("img.mjd")[0].setAttribute("height", imageSizes[i][1]);
+                        $("img.mjd")[0].setAttribute("src", images[i]);
+                        $("h2.instruction")[0].innerHTML = "Find the Majed!";
+                        $("h2.instruction")[0].setAttribute("style", "color:#212529;");
+                        $("map")[0].children[0].setAttribute("coords", coords[i]);
+                        refresh();
+                    }
+
+
+
+                    , 3000);
+            }
+            locked = true;
+        }
+        $(document).onresize = function (e) {
+            //$('img[usemap]').rwdImageMaps();
+
+            setTimeout(function () {
+                refresh()
+            }, 500);
+        };
+        $(document).ready(function (e) {
+            $(".videos").slick({
+                draggable: true,
+                arrows: true,
+                prevArrow: $(".btn-videos-prev"),
+                nextArrow: $(".btn-videos-next")
+            });
+            refresh();
+        });
+        window.addEventListener("orientationchange", function () {
+            setTimeout(function () {
+                refresh()
+            }, 500);
+        })
+    </script>
+
+    <title>Majed</title>
+
+</head>
+
+<body style="background-image: url(./mjd.png);background-size: 5%;">
+    <div class="jumbotron" style="text-align: center;">
+        <h1>Club MJD</h1>
+        <br>
+        <div class="puzzle" style="text-align: center;">
+            <div>
+                <img src="./penguins.png" class="mjd" usemap="#majed" width="1600" height="900"
+                    style="border-radius: .25rem; margin-bottom: 5%;">
+                <map name="majed">
+                    <area shape="rect" coords="1408,374,1450,472" onclick="cheer();" alt="Majed">
+
+                </map>
+
+                <h2 class="instruction">Find the Majed!</h2>
+            </div>
+
+
+        </div>
+
+    </div>
+    <br><br><br><br><br>
+    <div class="jumbotron">
+        <h1>About Majed</h1>
+        <p>Majed Shariati is an English teacher in Nesibe Aydin Schools, Ankara. He was born in 1900s, his birthday is a
+            secret that he keeps but some rumors say that everyday is his birthday which leads us that he is
+            approximately a lot years old. His mother is American and we think that his father is Iranian and he is
+            Iranian but emigrated to America. He changed his surname and we don’t know the reason but we know that he
+            uses his mother’s surname. He talks about his mother a lot but not about his father. So probably he hates
+            his father. When we need to talk about his family life, we know not much but as we learned this morning, he
+            has a wife who teaches SAT and two children. He is patient because he grew up with brothers and also we
+            don’t know how many brothers he have but we will learn soon as we heard from him. He is still alive and we
+            as many people celebrate his birthday in order to make him older.</p>
+    </div>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <div class="jumbotron" style="text-align: center;">
+        <h1>Videos</h1>
+        <br>
+
+        <div class="videos">
+            <div><video style="width:80%;height: auto;" controls>
+                    <source src="birthday.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video></div>
+                <div><video style="width:80%;height: auto;" controls>
+                    <source src="telemjds.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video></div>
+                <div><video style="width:80%;height: auto;" controls>
+                    <source src="amirhassan.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video></div>
+        </div>
+        <button class="btn-videos-prev btn btn-success">
+            <</button> <button class="btn-videos-next btn btn-success">>
+        </button>
+    </div>
+    </div>
+</body>
+
+</html>
